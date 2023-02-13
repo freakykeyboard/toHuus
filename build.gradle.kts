@@ -41,6 +41,8 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
+                implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
                 implementation("io.ktor:ktor-server-netty:2.0.2")
             }
@@ -57,6 +59,8 @@ kotlin {
         }
         val jsMain by getting {
             dependencies {
+
+
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react:18.2.0-pre.346")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:18.2.0-pre.346")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion:11.9.3-pre.346")

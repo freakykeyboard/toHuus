@@ -3,6 +3,7 @@ package tech.berndlorenzen.application
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import tech.berndlorenzen.application.plugins.configureSerialization
 import tech.berndlorenzen.application.plugins.configureStatusPages
 import tech.berndlorenzen.application.routes.configureRouting
 
@@ -17,6 +18,7 @@ fun main() {
     ).start(wait = true)
 }
 fun Application.module() {
+    configureSerialization()
     configureRouting()
     configureStatusPages()
 }
