@@ -1,4 +1,6 @@
 val ktorVersion: String by project
+val serializationVersion: String by project
+val kmongoVersion: String by project
 plugins {
     kotlin("multiplatform") version "1.8.0"
     application
@@ -33,7 +35,11 @@ kotlin {
         }
     }
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
@@ -41,6 +47,14 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
+                implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
+                implementation("io.ktor:ktor-server-call-id:$ktorVersion")
+                implementation("io.ktor:ktor-server-auth:$ktorVersion")
+                implementation("io.ktor:ktor-server-sessions:$ktorVersion")
+                implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:7.18.0")
+                implementation("org.kodein.di:kodein-di:7.8.0")
+                implementation("org.litote.kmongo:kmongo-coroutine-serialization:$kmongoVersion")
+                implementation("org.litote.kmongo:kmongo:$kmongoVersion")
                 implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
@@ -49,6 +63,9 @@ kotlin {
         }
         val jvmTest by getting {
             dependencies {
+                implementation("io.ktor:ktor-server-test-host:$ktorVersion")
+                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-cio:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
@@ -60,7 +77,8 @@ kotlin {
         val jsMain by getting {
             dependencies {
 
-
+                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react:18.2.0-pre.346")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:18.2.0-pre.346")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion:11.9.3-pre.346")

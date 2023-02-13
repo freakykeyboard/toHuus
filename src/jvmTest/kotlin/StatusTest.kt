@@ -1,30 +1,35 @@
-import io.ktor.client.*
-import io.ktor.client.engine.cio.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import kotlinx.coroutines.runBlocking
+import io.ktor.server.testing.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+class ApplicationTest {
+    @Test
+    fun testRoot() = testApplication {
+        val response = client.get("/")
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals("Hello, world!", response.bodyAsText())
+    }
+}
+
 class StatusTest {
     @Test
-    fun testStatusOk() {
-        val client = HttpClient(CIO)
-        // if the route is not found and does not contain "api" in the path, the index.html should be returned
-        runBlocking {
-            val response:HttpResponse=client.request("http://localhost:8080/unknownRoute")
-            assertEquals(HttpStatusCode.OK,response.status)
-        }
-        }
+    fun testStatusOk() = testApplication {
+        val response: HttpResponse = client.request("unknownRoute")
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals(this::class.java.classLoader.getResource("index.html")!!.readText(), response.bodyAsText())
+
+    }
+
     @Test
-    fun testStatusNotFound() {
-        val client = HttpClient(CIO)
+    fun testStatusNotFound() = testApplication {
+
         // if the route is not found and does  contain "api" in the path a 404 should be returned
-        runBlocking {
-            val response:HttpResponse=client.request("http://localhost:8080/api/unknownRoute")
-            assertEquals(HttpStatusCode.NotFound,response.status)
-        }
+        val response: HttpResponse = client.request("api/unknownRoute")
+        assertEquals(HttpStatusCode.NotFound, response.status)
+
     }
 
 }
