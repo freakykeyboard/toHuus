@@ -1,5 +1,6 @@
 package tech.berndlorenzen.application.plugins
 
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
@@ -9,25 +10,34 @@ import org.kodein.di.instance
 import org.kodein.di.ktor.closestDI
 import tech.berndlorenzen.application.models.UserSession
 import tech.berndlorenzen.application.repository.UserRepository
+import java.io.File
 
 fun Application.configureSecurity() {
     val repository by closestDI().instance<UserRepository>()
-
+    val isProduction:Boolean=System.getenv("PRODUCTION")?.toBoolean()?:false
     install(Sessions) {
-        cookie<UserSession>("user-session") {
-            cookie.extensions["SameSite"] = "lax"
+        if (isProduction) {
+            cookie<UserSession>("user-session", directorySessionStorage(File("build/.sessions"))) {
+                cookie.extensions["SameSite"] = "lax"
+                //cookie.secure = true
+            }
+            }else {
+                cookie<UserSession>("user-session", SessionStorageMemory()) {
+                    cookie.extensions["SameSite"] = "lax"
+                }
+            }
+
         }
-    }
+
 
     install(Authentication){
         form("auth-form"){
-
             userParamName = "username"
             passwordParamName = "password"
             validate { credentials ->
                 val user=repository.checkCredentials(credentials.name,credentials.password.hashCode().toString())
                 if (user!=null) {
-                    user.userId?.let { UserIdPrincipal(it) }
+                     UserIdPrincipal(credentials.name)
                 }else {
                     null
                 }
@@ -37,7 +47,7 @@ fun Application.configureSecurity() {
         }
         session<UserSession>("auth-session"){
             validate { session ->
-                if (session.id.isNotEmpty()){
+                if (session.userId.isNotEmpty()){
                     session
                 }else {
                     null
@@ -53,14 +63,14 @@ fun Application.configureSecurity() {
         route("/api/auth"){
             authenticate("auth-form") {
                 post("/login") {
-                    val userid = call.principal<UserIdPrincipal>()?.name.toString()
-                    call.sessions.set(UserSession(id = userid))
-                    call.respondRedirect("/")
+                    call.principal<UserIdPrincipal>()?.name.toString()
+                    call.sessions.set(UserSession(generateSessionId()))
+                    call.respond(HttpStatusCode.OK)
                 }
             }
             get("/logout") {
                 call.sessions.clear<UserSession>()
-                call.respondRedirect("/login")
+                call.respondRedirect("/anmelden")
             }
         }
 

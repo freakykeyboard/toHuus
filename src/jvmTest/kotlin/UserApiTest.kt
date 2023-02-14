@@ -24,6 +24,7 @@ class UserApiTest {
                     }
                 )
             assertEquals(HttpStatusCode.OK, response.status)
+
     }
     @Test
     fun testGetUserNotFound() = testApplication {
