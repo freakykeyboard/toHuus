@@ -4,6 +4,7 @@ import io.ktor.server.application.*
 import io.ktor.server.routing.*
 import org.kodein.di.bindSingleton
 import org.kodein.di.ktor.di
+import tech.berndlorenzen.application.plugins.configureMonitoring
 import tech.berndlorenzen.application.plugins.configureSecurity
 import tech.berndlorenzen.application.plugins.configureSerialization
 import tech.berndlorenzen.application.plugins.configureStatusPages
@@ -18,6 +19,7 @@ fun Application.module() {
     di {
         bindSingleton<UserRepository> { UserMongoDBRepository() }
     }
+    configureMonitoring()
     configureSerialization()
     configureRouting()
     configureStatusPages()
