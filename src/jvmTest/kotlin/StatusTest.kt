@@ -4,6 +4,7 @@ import io.ktor.http.*
 import io.ktor.server.testing.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class ApplicationTest {
     @Test
@@ -29,6 +30,13 @@ class StatusTest {
         // if the route is not found and does  contain "api" in the path a 404 should be returned
         val response: HttpResponse = client.request("api/unknownRoute")
         assertEquals(HttpStatusCode.NotFound, response.status)
+
+    }
+    @Test
+    fun testStatic() = testApplication {
+        val response: HttpResponse = client.request("static/toHuus.js")
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertTrue(response.bodyAsText().contains("script"))
 
     }
 

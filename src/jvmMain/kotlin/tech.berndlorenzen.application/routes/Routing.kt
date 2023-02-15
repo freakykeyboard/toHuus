@@ -5,8 +5,9 @@ import io.ktor.server.routing.*
 
 fun Application.configureRouting() {
     routing {
-        userRouting()
         indexRouting()
+        userRouting()
+
 
     }
 }

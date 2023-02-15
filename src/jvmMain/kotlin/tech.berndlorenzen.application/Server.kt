@@ -19,9 +19,10 @@ fun Application.module() {
     di {
         bindSingleton<UserRepository> { UserMongoDBRepository() }
     }
+    configureRouting()
     configureMonitoring()
     configureSerialization()
-    configureRouting()
+
     configureStatusPages()
     configureSecurity()
 }
