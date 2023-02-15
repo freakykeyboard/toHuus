@@ -1,6 +1,7 @@
 val ktorVersion: String by project
 val serializationVersion: String by project
 val kmongoVersion: String by project
+val isProduction = true
 plugins {
     kotlin("multiplatform") version "1.8.0"
     application
@@ -31,6 +32,13 @@ kotlin {
                 cssSupport {
                     enabled.set(true)
                 }
+            }
+            runTask {
+                devServer = org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig.DevServer(
+                    open = false,
+                    port = 8081,
+                    proxy = mutableMapOf("*" to "http://localhost:8080"),
+                )
             }
         }
     }
