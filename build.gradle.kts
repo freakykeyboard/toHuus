@@ -45,6 +45,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
             }
         }
@@ -100,7 +101,7 @@ kotlin {
 }
 
 application {
-    //applicationDefaultJvmArgs = listOf("-Dio.ktor.development=true")
+    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=true")
     mainClass.set("tech.berndlorenzen.application.ServerKt")
 }
 

@@ -1,7 +1,9 @@
 package tech.berndlorenzen.application.plugins
 
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
@@ -37,7 +39,7 @@ fun Application.configureSecurity() {
             validate { credentials ->
                 val user = repository.checkCredentials(credentials.name, credentials.password.hashCode().toString())
                 if (user != null) {
-                    UserIdPrincipal(credentials.name)
+                    UserIdPrincipal(user.userId.toString())
                 } else {
                     null
                 }
@@ -54,7 +56,12 @@ fun Application.configureSecurity() {
                 }
             }
             challenge {
-                call.respondRedirect("/anmelden")
+                if (call.request.path().contains("api")) {
+                    call.respondText(text = "401: Unauthorized", status = HttpStatusCode.Unauthorized)
+                } else {
+                    call.respondRedirect("/anmelden")
+                }
+
             }
         }
     }
@@ -64,7 +71,7 @@ fun Application.configureSecurity() {
             authenticate("auth-form") {
                 post("/login") {
                     call.principal<UserIdPrincipal>()?.name.toString()
-                    call.sessions.set(UserSession(generateSessionId()))
+                    call.sessions.set(UserSession(call.principal<UserIdPrincipal>()?.name.toString()))
                     call.respondRedirect("/SHS")
                 }
             }
