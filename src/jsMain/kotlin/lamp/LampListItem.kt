@@ -11,7 +11,7 @@ external interface LampListItemProps : Props {
 
 }
 
-val ListItemComponent = FC<LampListItemProps> { props ->
+val LampListItemComponent = FC<LampListItemProps> { props ->
     val navigate = useNavigate()
     li {
         +"Name: ${props.lamp.name}"

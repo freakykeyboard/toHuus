@@ -5,10 +5,7 @@ import io.ktor.server.routing.*
 import org.kodein.di.bindSingleton
 import org.kodein.di.ktor.di
 import tech.berndlorenzen.application.plugins.*
-import tech.berndlorenzen.application.repository.LampMongoDBRepository
-import tech.berndlorenzen.application.repository.LampRepository
-import tech.berndlorenzen.application.repository.UserMongoDBRepository
-import tech.berndlorenzen.application.repository.UserRepository
+import tech.berndlorenzen.application.repository.*
 import tech.berndlorenzen.application.routes.configureRouting
 
 
@@ -19,6 +16,7 @@ fun Application.module() {
     di {
         bindSingleton<UserRepository> { UserMongoDBRepository() }
         bindSingleton<LampRepository> { LampMongoDBRepository() }
+        bindSingleton<WallboxRepository> { WallboxMongoDbRepository() }
     }
     configureSecurity()
     configureRouting()

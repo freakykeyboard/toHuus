@@ -12,6 +12,7 @@ import react.router.Routes
 import react.router.useNavigate
 import react.useState
 import service.login
+import wallbox.WallboxForm
 
 val scope = MainScope()
 
@@ -72,6 +73,12 @@ val Root = FC<RootProps> { props ->
         Route {
             path = "/SHS/lampen/:id?"
             element = LampForm.create() {
+
+            }
+        }
+        Route {
+            path = "/SHS/wallbox/:id?"
+            element = WallboxForm.create() {
 
             }
         }

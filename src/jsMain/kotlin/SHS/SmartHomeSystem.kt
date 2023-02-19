@@ -2,6 +2,7 @@ package SHS
 
 import HeaderComponent
 import Lamp
+import Wallbox
 import csstype.ClassName
 import kotlinx.coroutines.launch
 import lamp.LampList
@@ -13,17 +14,20 @@ import react.useEffectOnce
 import react.useState
 import scope
 import service.getAllLamps
+import service.getAllWallboxes
+import wallbox.WallboxList
 
 
 val SmartHomeSystem = FC<Props> {
     var lampList by useState { emptyList<Lamp>() }
     val (loading, setLoading) = useState(true)
     val blindList by useState { emptyList<Any>() }
-    val wallboxList by useState { emptyList<Any>() }
+    var wallboxList by useState { emptyList<Wallbox>() }
 
     useEffectOnce {
         scope.launch {
             lampList = getAllLamps()
+            wallboxList = getAllWallboxes()
             setLoading(false)
         }
 
@@ -43,9 +47,15 @@ val SmartHomeSystem = FC<Props> {
                 infoText = "Es wurden noch keine Lampen angelegt! Warum nicht gleich eine anlegen?"
                 deviceList = lampList
             }
-
+            WallboxList {
+                name = "Wallboxen"
+                infoText = "Es wurden noch keine Wallboxen angelegt! Warum nicht gleich eine anlegen?"
+                this.wallboxList = wallboxList
+            }
 
         }
+
+
     }
 
 

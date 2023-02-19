@@ -1,6 +1,6 @@
-package lamp
+package wallbox
 
-import Lamp
+import Wallbox
 import csstype.ClassName
 import react.FC
 import react.Props
@@ -12,14 +12,13 @@ import react.dom.html.ReactHTML.p
 import react.dom.html.ReactHTML.ul
 import react.router.useNavigate
 
-external interface LampListProps : Props {
+external interface WallboxListProps : Props {
     var name: String
     var infoText: String
-    var deviceList: List<Lamp>
-
+    var wallboxList: List<Wallbox>
 }
 
-val LampList = FC<LampListProps> { props ->
+val WallboxList = FC<WallboxListProps> { props ->
     val navigate = useNavigate()
 
     div {
@@ -29,14 +28,14 @@ val LampList = FC<LampListProps> { props ->
         }
         ul {
             className = ClassName("w3-ul w3-card-4 w3-hoverable")
-            props.deviceList.forEach {
-                LampListItemComponent {
-                    lamp = it
+            props.wallboxList.forEach {
+                WallboxListItemComponent {
+                    wallbox = it
                 }
             }
         }
 
-        if (props.deviceList.isEmpty()) {
+        if (props.wallboxList.isEmpty()) {
             div {
                 className = ClassName("w3-panel w3-round-large w3-blue")
                 h3 {
@@ -49,12 +48,10 @@ val LampList = FC<LampListProps> { props ->
                     className = ClassName("w3-button w3-circle w3-black")
                     +"+"
                     onClick = {
-                        navigate("/SHS/lampen")
+                        navigate("/SHS/wallbox")
                     }
                 }
             }
         }
     }
 }
-
-
