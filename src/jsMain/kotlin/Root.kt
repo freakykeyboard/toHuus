@@ -1,4 +1,5 @@
 import SHS.SmartHomeSystem
+import blind.BlindForm
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import lamp.LampForm
@@ -79,6 +80,12 @@ val Root = FC<RootProps> { props ->
         Route {
             path = "/SHS/wallbox/:id?"
             element = WallboxForm.create() {
+
+            }
+        }
+        Route {
+            path = "/SHS/rolladen/:id?"
+            element = BlindForm.create() {
 
             }
         }

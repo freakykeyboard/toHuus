@@ -17,6 +17,7 @@ fun Application.module() {
         bindSingleton<UserRepository> { UserMongoDBRepository() }
         bindSingleton<LampRepository> { LampMongoDBRepository() }
         bindSingleton<WallboxRepository> { WallboxMongoDbRepository() }
+        bindSingleton<BlindRepository> { BlindMongoDbRepository() }
     }
     configureSecurity()
     configureRouting()

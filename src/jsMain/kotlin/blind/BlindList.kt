@@ -1,6 +1,6 @@
-package wallbox
+package blind
 
-import Wallbox
+import Blind
 import csstype.ClassName
 import react.FC
 import react.Props
@@ -12,13 +12,15 @@ import react.dom.html.ReactHTML.p
 import react.dom.html.ReactHTML.ul
 import react.router.useNavigate
 
-external interface WallboxListProps : Props {
+external interface BlindListProps : Props {
     var name: String
     var infoText: String
-    var deviceList: List<Wallbox>
+    var deviceList: List<Blind>
+
 }
 
-val WallboxList = FC<WallboxListProps> { props ->
+
+val BlindList = FC<BlindListProps> { props ->
     val navigate = useNavigate()
 
     div {
@@ -29,8 +31,8 @@ val WallboxList = FC<WallboxListProps> { props ->
         ul {
             className = ClassName("w3-ul w3-card-4 w3-hoverable")
             props.deviceList.forEach {
-                WallboxListItemComponent {
-                    wallbox = it
+                BlindListItemComponent {
+                    blind = it
                 }
             }
         }
@@ -48,10 +50,12 @@ val WallboxList = FC<WallboxListProps> { props ->
                     className = ClassName("w3-button w3-circle w3-black")
                     +"+"
                     onClick = {
-                        navigate("/SHS/wallbox")
+                        navigate("/SHS/Rolladen")
                     }
                 }
             }
         }
     }
+
+
 }
