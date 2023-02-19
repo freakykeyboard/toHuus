@@ -21,7 +21,7 @@ external interface LoginProps : Props {
 
 val Login = FC<LoginProps> { props ->
     HeaderComponent {
-        name = "toHuus"
+        headerName = "toHuus"
     }
     MenuComponent()
     h1 {
@@ -32,6 +32,7 @@ val Login = FC<LoginProps> { props ->
         label {
             +"Benutzername"
         }
+
         input {
             type = InputType.text
             className = ClassName("w3-input")

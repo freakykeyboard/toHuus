@@ -19,16 +19,18 @@ fun Route.lampRouting() {
 
             get {
                 val userSession = call.principal<UserSession>()
-                repository.all(userSession!!.userId)
+                val lampList = repository.all(userSession!!.userId)
+                call.respond(lampList)
             }
             get("/{id}") {
-                repository.read(call.parameters["id"]!!)
+                val lamp = repository.read(call.parameters["id"]!!)
+                call.respond(lamp!!)
             }
             post {
                 val userSession = call.principal<UserSession>()
                 val lamp = call.receive<Lamp>()
-                repository.newLamp(lamp.name, userSession!!.userId)
-                call.respond(HttpStatusCode(201, "Created"))
+                val newLamp = repository.newLamp(lamp.name, userSession!!.userId)
+                call.respond(newLamp)
 
             }
 
@@ -36,13 +38,15 @@ fun Route.lampRouting() {
                 val lamp = call.receive<Lamp>()
                 repository.switch(lamp)
             }
-            put("/name/{id}") {
+            put("/{id}") {
                 val lamp = call.receive<Lamp>()
                 repository.rename(lamp)
+                call.respond(HttpStatusCode(200, "OK"))
             }
 
             delete("/{id}") {
                 repository.delete(call.parameters["id"]!!)
+                call.respond(HttpStatusCode(200, "OK"))
             }
         }
     }

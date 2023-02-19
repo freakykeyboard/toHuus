@@ -11,11 +11,12 @@ external interface MenuItemProps : Props {
     var isActive: Boolean
     var onShow: () -> Unit
 }
+
 val MenuItemComponent = FC<MenuItemProps> { props ->
     Link {
         +props.name
         to = props.to
-        className = ClassName("w3-bar-item w3-button ${if (props.isActive)"w3-grey" else ""}")
+        className = ClassName("w3-bar-item w3-button ${if (props.isActive) "w3-grey" else ""}")
         onClick = { props.onShow() }
 
     }

@@ -27,10 +27,10 @@ class LampMongoDBRepository : LampRepository {
         return collection.find(Lamp::userId eq userId).toList()
     }
 
-    override suspend fun newLamp(name: String, userId: String) {
-        val newLamp = Lamp(id = ObjectId().toString(), name = name)
-        newLamp.userId = userId
+    override suspend fun newLamp(name: String, userId: String): Lamp {
+        val newLamp = Lamp(id = ObjectId().toString(), name = name, userId = userId)
         collection.insertOne(newLamp)
+        return newLamp
     }
 
     override suspend fun read(id: String): Lamp? {

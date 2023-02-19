@@ -51,7 +51,7 @@ class LampApiTest {
             contentType(ContentType.Application.Json)
             setBody(lamp)
         }
-        assertEquals(HttpStatusCode.Created, response.status)
+        assertEquals(HttpStatusCode.OK, response.status)
     }
 
 }
