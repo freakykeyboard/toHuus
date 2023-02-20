@@ -3,7 +3,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 class Lamp(
     override val id: String? = null,
-    override val name: String,
+    override var name: String,
     override val userId: String? = null,
     var isOn: Boolean = false
 ) : Device() {

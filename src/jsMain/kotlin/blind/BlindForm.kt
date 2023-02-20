@@ -24,11 +24,16 @@ import react.router.useParams
 import react.useEffectOnce
 import react.useState
 import scope
-import service.*
+import service.addBlind
+import service.changeBlind
+import service.deleteBlind
+import service.getBlind
 
 val BlindForm = FC<Props> {
     val (loading, setLoading) = useState(true)
-    var blind by useState(Blind(null, ""))
+    var (blind, setBlind) = useState(Blind(null, ""))
+    val (name, setName) = useState("")
+    val (position, setPosition) = useState(0)
     val (showSuccess, setShowSuccess) = useState(false)
     val navigate = useNavigate()
     val params = useParams()
@@ -38,7 +43,10 @@ val BlindForm = FC<Props> {
     useEffectOnce {
         if (blindId != null) {
             scope.launch {
-                blind = getBlind(blindId)
+                val blind = getBlind(blindId)
+                setBlind(blind)
+                setName(blind.name)
+                setPosition(blind.position)
                 setLoading(false)
             }
         } else {
@@ -69,13 +77,13 @@ val BlindForm = FC<Props> {
                 InputComponent {
                     placeHolder = "Name"
                     type = InputType.text
-                    value = blind.name
+                    value = name
                     label = "Name"
                     className = ClassName("w3-input w3-border w3-sand")
                     onChange = { event ->
                         val button = document.getElementById("button")
                         button?.classList?.remove("w3-disabled")
-                        blind.name = event.target.value
+                        setName(event.target.value)
 
                     }
                 }
@@ -87,7 +95,7 @@ val BlindForm = FC<Props> {
                         className = "w3-button w3-green w3-disabled"
                         onClick = {
                             scope.launch {
-                                blind = addBlind(blind)
+                                setBlind(addBlind(blind))
                                 navigate("/SHS")
                             }
                         }
@@ -96,18 +104,15 @@ val BlindForm = FC<Props> {
                     p {
                         input {
                             type = InputType.number
-                            value = blind.position.toString()
+                            value = position.toString()
                             className = ClassName("w3-input w3-border w3-sand")
                             min = 0.0
                             max = 100.0
                             onChange = { event ->
-                                blind.position = event.target.value.toByte()
-                                scope.launch {
-                                    move(blind)
-                                    blind = getBlind(blind.id!!)
-                                    setShowSuccess(true)
-                                }
-
+                                setPosition(event.target.value.toInt())
+                                val button = document.getElementById("button")
+                                button?.classList?.remove("w3-disabled")
+                                
                             }
                         }
                         label {
@@ -125,7 +130,9 @@ val BlindForm = FC<Props> {
                             id = "button"
                             onClick = {
                                 scope.launch {
-                                    changeBlindName(blind)
+                                    blind.name = name
+                                    blind.position = position
+                                    changeBlind(blind)
                                     blind = getBlind(blind.id!!)
                                     val button = document.getElementById("button")
                                     button?.classList?.add("w3-disabled")

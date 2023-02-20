@@ -32,8 +32,9 @@ external interface LampFormProps : Props {
 
 val LampForm = FC<LampFormProps> { _ ->
     val (loading, setLoading) = useState(true)
-    val (lamp, setLamp) = useState(Lamp(null, ""))
     val (name, setName) = useState("")
+    val (lamp, setLamp) = useState(Lamp("", ""))
+    val (on, setOn) = useState(false)
     val (showSuccess, setShowSuccess) = useState(false)
     val navigate = useNavigate()
     val params = useParams()
@@ -43,8 +44,10 @@ val LampForm = FC<LampFormProps> { _ ->
     useEffectOnce {
         if (lampId != null) {
             scope.launch {
-                setLamp(getLamp(lampId))
+                val lamp = getLamp(lampId)
                 setName(lamp.name)
+                setOn(lamp.isOn)
+                setLamp(lamp)
                 setLoading(false)
             }
         } else {
@@ -63,7 +66,7 @@ val LampForm = FC<LampFormProps> { _ ->
             div {
                 className = ClassName("w3-container w3-teal")
                 h3 {
-                    if (lamp.id != null) {
+                    if (lampId != null) {
                         +"Lampe bearbeiten"
                     } else {
                         +"Neue Lampe anlegen"
@@ -84,26 +87,26 @@ val LampForm = FC<LampFormProps> { _ ->
                     }
                 }
 
-                if (lamp.id == null) {
+                if (lampId == null) {
                     ButtonComponent {
                         id = "button"
                         text = "Lampe anlegen"
                         className = "w3-button w3-green w3-disabled"
                         onClick = {
                             scope.launch {
-                                setLamp(addLamp(lamp))
+                                addLamp(Lamp(name = name))
                                 navigate("/SHS")
                             }
                         }
                     }
                 } else {
                     CheckBox {
-                        checked = lamp.isOn == true
+                        checked = on == true
                         className = ClassName("w3-check")
                         onChange = { event ->
                             val button = document.getElementById("button")
                             button?.classList?.remove("w3-disabled")
-                            lamp.isOn = event.target.checked
+                            setOn(event.target.checked)
 
                         }
                     }
@@ -114,8 +117,10 @@ val LampForm = FC<LampFormProps> { _ ->
                             id = "button"
                             onClick = {
                                 scope.launch {
+                                    lamp.name = name
+                                    lamp.isOn = on
+
                                     updateLamp(lamp)
-                                    setLamp(getLamp(lamp.id))
                                     val button = document.getElementById("button")
                                     button?.classList?.add("w3-disabled")
                                     setShowSuccess(true)
@@ -128,7 +133,7 @@ val LampForm = FC<LampFormProps> { _ ->
                             className = "w3-button w3-right w3-circle w3-red"
                             onClick = {
                                 scope.launch {
-                                    deleteLamp(lamp)
+                                    deleteLamp(lampId)
                                     navigate("/SHS")
                                 }
                             }

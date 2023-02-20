@@ -33,7 +33,7 @@ suspend fun deleteBlind(blind: Blind) {
     }
 }
 
-suspend fun changeBlindName(blind: Blind) {
+suspend fun changeBlind(blind: Blind) {
     jsonClient.put("${Blind.path}/${blind.id}") {
         contentType(ContentType.Application.Json)
         setBody(blind)

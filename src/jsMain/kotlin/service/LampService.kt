@@ -31,8 +31,8 @@ suspend fun updateLamp(lamp: Lamp) {
 
 }
 
-suspend fun deleteLamp(lamp: Lamp) {
-    jsonClient.delete("${Lamp.path}/${lamp.id}") {
+suspend fun deleteLamp(lampId: String) {
+    jsonClient.delete("${Lamp.path}/${lampId}") {
 
     }
 }

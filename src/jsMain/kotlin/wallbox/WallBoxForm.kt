@@ -28,14 +28,17 @@ import service.updateWallbox
 val WallboxForm = FC<Props> {
     val navigate = useNavigate()
     val (showSuccess, setShowSuccess) = useState(false)
-    var wallbox by useState(Wallbox(null, ""))
+    val (wallbox, setWallbox) = useState(Wallbox(null, ""))
+    val (name, setName) = useState("")
     val (loading, setLoading) = useState(true)
     val params = useParams()
     val wallboxId = params["id"]
     useEffectOnce {
         if (wallboxId != null) {
             scope.launch {
-                wallbox = getWallbox(wallboxId)
+                val wallbox = getWallbox(wallboxId)
+                setName(wallbox.name)
+                setWallbox(wallbox)
                 setLoading(false)
             }
         } else {
@@ -67,12 +70,12 @@ val WallboxForm = FC<Props> {
                     placeHolder = "z.b. Carport 1"
                     label = "Name"
                     type = InputType.text
-                    value = wallbox.name
+                    value = name
                     className = ClassName("w3-input w3-border w3-sand")
                     onChange = { event ->
                         val button = document.getElementById("button")
                         button?.classList?.remove("w3-disabled")
-                        wallbox.name = event.target.value
+                        setName(event.target.value)
                     }
                 }
 
@@ -83,7 +86,7 @@ val WallboxForm = FC<Props> {
                         className = "w3-button w3-green w3-disabled"
                         onClick = {
                             scope.launch {
-                                wallbox = addWallbox(wallbox)
+                                setWallbox(addWallbox(wallbox))
                                 navigate("/SHS")
                             }
                         }
@@ -96,8 +99,9 @@ val WallboxForm = FC<Props> {
                             id = "button"
                             onClick = {
                                 scope.launch {
+                                    wallbox.name = name
                                     updateWallbox(wallbox)
-                                    wallbox = getWallbox(wallbox.id!!)
+                                    setWallbox(getWallbox(wallbox.id))
                                     val button = document.getElementById("button")
                                     button?.classList?.add("w3-disabled")
                                     setShowSuccess(true)
