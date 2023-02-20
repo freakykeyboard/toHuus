@@ -49,6 +49,46 @@ val MenuComponent = FC<MenuProps> { props ->
                 }
             }
         }
+        div {
+            className = ClassName("w3-dropdown-hover")
+            button {
+                className = ClassName("w3-bar-item w3-bar-button w3-black ${if (activeIndex == 3) "w3-grey" else ""}")
+
+                +"Wallboxen"
+                div {
+                    className = ClassName("w3-dropdown-content w3-bar-block w3-card-4 w3-black")
+                    MenuItemComponent {
+                        name = "Neue Wallbox"
+                        to = "/SHS/wallbox"
+                        isActive = activeIndex == 4
+                        onShow = { setActiveIndex(4) }
+                    }
+                }
+            }
+        }
+        div {
+            className = ClassName("w3-dropdown-hover")
+            button {
+                className = ClassName("w3-bar-item w3-bar-button w3-black ${if (activeIndex == 3) "w3-grey" else ""}")
+
+                +"Rolläden"
+                div {
+                    className = ClassName("w3-dropdown-content w3-bar-block w3-card-4 w3-black")
+                    MenuItemComponent {
+                        name = "Neue Rolläden"
+                        to = "/SHS/rolladen"
+                        isActive = activeIndex == 5
+                        onShow = { setActiveIndex(5) }
+                    }
+                }
+            }
+        }
+        MenuItemComponent {
+            name = "Szene"
+            to = "/SHS/szene"
+            isActive = activeIndex == 6
+            onShow = { setActiveIndex(6) }
+        }
 
         if (!isLoggedIn) {
             MenuItemComponent {

@@ -76,7 +76,7 @@ val BlindForm = FC<Props> {
                         val button = document.getElementById("button")
                         button?.classList?.remove("w3-disabled")
                         blind.name = event.target.value
-                        blind = blind.copy()
+
                     }
                 }
 
@@ -107,7 +107,7 @@ val BlindForm = FC<Props> {
                                     blind = getBlind(blind.id!!)
                                     setShowSuccess(true)
                                 }
-                                
+
                             }
                         }
                         label {

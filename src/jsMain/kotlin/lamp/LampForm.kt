@@ -32,7 +32,8 @@ external interface LampFormProps : Props {
 
 val LampForm = FC<LampFormProps> { _ ->
     val (loading, setLoading) = useState(true)
-    var lamp by useState(Lamp(null, ""))
+    val (lamp, setLamp) = useState(Lamp(null, ""))
+    val (name, setName) = useState("")
     val (showSuccess, setShowSuccess) = useState(false)
     val navigate = useNavigate()
     val params = useParams()
@@ -42,7 +43,8 @@ val LampForm = FC<LampFormProps> { _ ->
     useEffectOnce {
         if (lampId != null) {
             scope.launch {
-                lamp = getLamp(lampId)
+                setLamp(getLamp(lampId))
+                setName(lamp.name)
                 setLoading(false)
             }
         } else {
@@ -73,13 +75,12 @@ val LampForm = FC<LampFormProps> { _ ->
                 InputComponent {
                     placeHolder = "Name"
                     type = InputType.text
-                    value = lamp.name
+                    value = name
                     className = ClassName("w3-input w3-border w3-sand")
                     onChange = { event ->
                         val button = document.getElementById("button")
                         button?.classList?.remove("w3-disabled")
-                        lamp.name = event.target.value
-                        lamp = lamp.copy()
+                        setName(event.target.value)
                     }
                 }
 
@@ -90,7 +91,7 @@ val LampForm = FC<LampFormProps> { _ ->
                         className = "w3-button w3-green w3-disabled"
                         onClick = {
                             scope.launch {
-                                lamp = addLamp(lamp)
+                                setLamp(addLamp(lamp))
                                 navigate("/SHS")
                             }
                         }
@@ -103,7 +104,7 @@ val LampForm = FC<LampFormProps> { _ ->
                             val button = document.getElementById("button")
                             button?.classList?.remove("w3-disabled")
                             lamp.isOn = event.target.checked
-                            lamp = lamp.copy()
+
                         }
                     }
                     div {
@@ -114,7 +115,7 @@ val LampForm = FC<LampFormProps> { _ ->
                             onClick = {
                                 scope.launch {
                                     updateLamp(lamp)
-                                    lamp = getLamp(lamp.id!!)
+                                    setLamp(getLamp(lamp.id))
                                     val button = document.getElementById("button")
                                     button?.classList?.add("w3-disabled")
                                     setShowSuccess(true)

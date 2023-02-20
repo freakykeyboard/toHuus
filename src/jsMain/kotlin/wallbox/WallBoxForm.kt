@@ -73,7 +73,6 @@ val WallboxForm = FC<Props> {
                         val button = document.getElementById("button")
                         button?.classList?.remove("w3-disabled")
                         wallbox.name = event.target.value
-                        wallbox = wallbox.copy()
                     }
                 }
 
