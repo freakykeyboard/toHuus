@@ -1,19 +1,13 @@
 import kotlinx.serialization.Serializable
 
 @Serializable
-class Blind(
-    override val id: String? = null,
-    override var name: String,
-    override val userId: String? = null,
-    var position: Int = 0,
-
-
-    ) : Device() {
-    companion object {
-        const val path = "/api/blind"
+class Blind(override var name: String, override var state: DeviceState) : Device() {
+    fun open() {
+        state = BlindOpen
+    }
+    fun close() {
+        state = BlindClosed
     }
 
-    fun move(position: Int) {
-        this.position = position
-    }
+
 }

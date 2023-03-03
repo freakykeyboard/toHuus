@@ -1,27 +1,13 @@
 import kotlinx.serialization.Serializable
 
 @Serializable
-class Wallbox(
-    override val id: String? = null,
-    override var name: String,
-    override val userId: String? = null,
-    var charging: Boolean = false,
-    var isConnected: Boolean = false,
+class Wallbox(override var  name: String, override var state: DeviceState) : Device(), Switchable {
 
-    ) : Device() {
-    companion object {
-        const val path = "/api/wallbox"
+    override fun switchOn() {
+        state = WallBoxLoading
     }
 
-    fun switch() {
-        charging = !charging
-    }
-
-    fun connect() {
-        isConnected = true
-    }
-
-    fun disconnect() {
-        isConnected = false
+    override fun switchOff() {
+        state = WallBoxNotLoading
     }
 }

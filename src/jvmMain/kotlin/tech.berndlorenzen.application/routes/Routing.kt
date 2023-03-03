@@ -7,9 +7,7 @@ fun Application.configureRouting() {
     routing {
         indexRouting()
         userRouting()
-        lampRouting()
-        blindRouting()
-        wallBoxRouting()
+
 
 
     }

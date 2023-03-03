@@ -15,8 +15,9 @@ val LampListItemComponent = FC<LampListItemProps> { props ->
     val navigate = useNavigate()
     li {
         +"Name: ${props.lamp.name}"
+        //TODO check
         onClick = {
-            navigate("/SHS/lampen/${props.lamp.id}")
+            //navigate("/SHS/lampen/${props.lamp.id}")
         }
     }
 }

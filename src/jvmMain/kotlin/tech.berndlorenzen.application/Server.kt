@@ -15,9 +15,7 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 fun Application.module() {
     di {
         bindSingleton<UserRepository> { UserMongoDBRepository() }
-        bindSingleton<LampRepository> { LampMongoDBRepository() }
-        bindSingleton<WallboxRepository> { WallboxMongoDbRepository() }
-        bindSingleton<BlindRepository> { BlindMongoDbRepository() }
+
     }
     configureSecurity()
     configureRouting()

@@ -1,8 +1,8 @@
 import SHS.SmartHomeSystem
-import blind.BlindForm
+
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import lamp.LampForm
+
 import org.w3c.dom.HTMLInputElement
 import react.FC
 import react.Props
@@ -13,7 +13,7 @@ import react.router.Routes
 import react.router.useNavigate
 import react.useState
 import service.login
-import wallbox.WallboxForm
+
 
 val scope = MainScope()
 
@@ -71,24 +71,7 @@ val Root = FC<RootProps> { props ->
             element = SmartHomeSystem.create()
 
         }
-        Route {
-            path = "/SHS/lampen/:id?"
-            element = LampForm.create() {
 
-            }
-        }
-        Route {
-            path = "/SHS/wallbox/:id?"
-            element = WallboxForm.create() {
-
-            }
-        }
-        Route {
-            path = "/SHS/rolladen/:id?"
-            element = BlindForm.create() {
-
-            }
-        }
 
 
     }

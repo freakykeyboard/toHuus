@@ -1,8 +1,7 @@
 import kotlinx.serialization.Serializable
-
 @Serializable
-sealed class Device {
-    abstract val id: String?
+sealed class Device () {
     abstract val name: String
-    abstract val userId: String?
+    abstract var state: DeviceState
+
 }
