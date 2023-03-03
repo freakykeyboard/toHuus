@@ -10,10 +10,12 @@ import io.ktor.server.util.*
 import org.kodein.di.instance
 import org.kodein.di.ktor.closestDI
 import tech.berndlorenzen.application.models.UserSession
+import tech.berndlorenzen.application.repository.SmartHomeRepository
 import tech.berndlorenzen.application.repository.UserRepository
 
 fun Route.userRouting() {
     val repository: UserRepository by closestDI().instance()
+    val smartHomeRepository: SmartHomeRepository by closestDI().instance()
     route(User.path) {
 
         post {
@@ -26,7 +28,7 @@ fun Route.userRouting() {
             if (newUser != null) {
                 newUser.password = ""
                 call.sessions.set(UserSession(userId = newUser.userId!!))
-
+                smartHomeRepository.add(newUser.userId!!)
                 call.respond(newUser)
             }
 
