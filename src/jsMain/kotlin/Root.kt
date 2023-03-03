@@ -13,6 +13,7 @@ import react.router.Routes
 import react.router.useNavigate
 import react.useState
 import service.login
+import service.register
 
 
 val scope = MainScope()
@@ -36,7 +37,13 @@ val Root = FC<RootProps> { props ->
         }
 
     }
-
+    fun handleRegister() {
+        scope.launch {
+            //TODO call register
+            register(User(null, username, password))
+            navigate("/anmelden")
+        }
+    }
     fun handleLogout() {
 
         scope.launch {
@@ -59,9 +66,18 @@ val Root = FC<RootProps> { props ->
     Routes {
         Route {
             path = "/anmelden"
-            element = Login.create() {
+            element = Login.create {
                 to = "/"
                 onSubmit = { handleLogin() }
+                onUsernameChange = { handleUsernameChange(it) }
+                onPasswordChange = { handlePasswordChange(it) }
+            }
+        }
+        Route {
+            path = "/registrieren"
+            element = Registration.create {
+                to = "/"
+                onSubmit = { handleRegister() }
                 onUsernameChange = { handleUsernameChange(it) }
                 onPasswordChange = { handlePasswordChange(it) }
             }

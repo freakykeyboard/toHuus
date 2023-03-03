@@ -27,3 +27,13 @@ suspend fun login(user: User): HttpResponse {
     return response
 
 }
+suspend fun register(user:User):HttpResponse{
+    val response : HttpResponse = jsonClient.submitForm (
+        url = User.path,
+        formParameters = Parameters.build {
+            append("username", user.username)
+            append("password", user.password)
+        }
+    )
+    return response
+}

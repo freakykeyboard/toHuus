@@ -26,6 +26,7 @@ fun Route.userRouting() {
             if (newUser != null) {
                 newUser.password = ""
                 call.sessions.set(UserSession(userId = newUser.userId!!))
+
                 call.respond(newUser)
             }
 
